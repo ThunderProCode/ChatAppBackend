@@ -34,21 +34,18 @@ io.on('connection', (socket) => {
     socket.on('connectionUsername', (connectionUsername) => {
         const targetSocket = userSockets[connectionUsername];
         if(targetSocket) {
-            console.log('Sender: '+socket.data.username);
-            console.log('Receiver: '+targetSocket.data.username);
-
             socket.emit('connectedToUser',targetSocket.data.username);
             targetSocket.emit('connectedToUser',socket.data.username);
 
         }
     });
 
-    socket.on('chat message', (msg) => {
-        const targetSocket = userSockets[msg.to];
+    socket.on('chatMessageToServer', (msg,to) => {
+        const targetSocket = userSockets[to];
         if(targetSocket) {
-            targetSocket.emit('chat message',msg.message);
+            console.log('Emitting: ' + msg + ' to: ' + to);
+            targetSocket.emit('chatMessage',msg);
         }
-
     });
 
     socket.on('disconnect', () => {
