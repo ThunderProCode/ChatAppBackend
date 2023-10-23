@@ -31,11 +31,15 @@ io.on('connection', (socket) => {
 
     socket.emit('username',socket.data.username);
 
-    socket.on('connection-username', (connectionUsername) => {
+    socket.on('connectionUsername', (connectionUsername) => {
         const targetSocket = userSockets[connectionUsername];
         if(targetSocket) {
-            socket.emit('connected',targetSocket.data.username);
-            targetSocket.emit('connected',socket.data.username);
+            console.log('Sender: '+socket.data.username);
+            console.log('Receiver: '+targetSocket.data.username);
+
+            socket.emit('connectedToUser',targetSocket.data.username);
+            targetSocket.emit('connectedToUser',socket.data.username);
+
         }
     });
 
